@@ -1,0 +1,2 @@
+BlipInfo = {}
+return BlipInfo

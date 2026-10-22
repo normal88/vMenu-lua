@@ -1,0 +1,8 @@
+backups/*.sql
+_backups/
+.OLD/
+*.bak
+*.bak[0-9]*
+node_modules/
+desktop.ini
+Thumbs.db
