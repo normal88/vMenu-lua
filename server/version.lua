@@ -60,7 +60,7 @@ local function FetchLatest(repository)
     if manifest.status == 200 and manifest.body then
         local version = manifest.body:match("\nversion%s+['\"]([^'\"]+)['\"]") or manifest.body:match("^version%s+['\"]([^'\"]+)['\"]")
         if version then
-            return version, ("https://github.com/%s"):format(repository)
+            return version, ("https://github.com/%s/releases/latest"):format(repository)
         end
     end
     return nil, nil
@@ -78,12 +78,12 @@ function VersionCheck.Run()
     GlobalState.vMenuLatestVersion = latest
 
     if VersionCheck.Compare(latest, VersionCheck.Current) > 0 then
-        print(("^3[vMenu]^7 Update available: ^1%s^7 -> ^2%s^7  %s"):format(VersionCheck.Current, latest, url or ""))
+        print(("^3An update is available for %s (current version: %s, latest version: %s)\r\n%s^0"):format(
+            RESOURCE, VersionCheck.Current, latest, url or ("https://github.com/%s/releases/latest"):format(repository)))
     end
 end
 
 CreateThread(function()
-    Wait(10000)
     while true do
         VersionCheck.Run()
         Wait(CHECK_INTERVAL)
