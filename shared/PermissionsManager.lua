@@ -548,7 +548,7 @@ if IsDuplicityVersion() then
         lastSent[src] = now
 
         local perms
-        if ConfigManager.GetSettingsBool(ConfigManager.Setting.vmenu_use_permissions) then
+        if GetConvar("vmenu_use_permissions", "false"):lower() == "true" then
             perms = ComputePermissions(tostring(src))
         else
             perms = GetPublicPermissions()

@@ -22,7 +22,18 @@ local WebhookColors = {
     spectate = 6591981
 }
 
-local vRP = exports["vrp"]:getvRP()
+local vRP = nil
+
+local function GetUserId(playerId)
+    if not playerId then return nil end
+    if not vRP and GetResourceState("vrp") == "started" then
+        local ok, api = pcall(function() return exports["vrp"]:getvRP() end)
+        if ok then vRP = api end
+    end
+    if not vRP then return nil end
+    local ok, userId = pcall(vRP.getUserId, playerId)
+    return ok and userId or nil
+end
 
 local function WebhookGetIds(playerId)
     local ids = {}
@@ -816,13 +827,13 @@ RegisterNetEvent(
     "vMenu:LogSpectate",
     function(enabled, targetName, targetServerId)
         local source = source
-        local user_id = vRP.getUserId(source)
+        local user_id = GetUserId(source)
         local fields = {
             {name = "Status", value = enabled and "Started" or "Stopped", inline = true},
             {name = "User ID", value = tostring(user_id or "N/A"), inline = true}
         }
         if enabled and targetName then
-            local target_user_id = targetServerId and vRP.getUserId(tonumber(targetServerId)) or nil
+            local target_user_id = GetUserId(tonumber(targetServerId))
             table.insert(
                 fields,
                 {
