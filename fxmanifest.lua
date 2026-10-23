@@ -3,7 +3,7 @@ game 'gta5'
 
 author 'Tom Grobbe - Normal / VSX Studio - Re-coded version'
 description 'vMenu - VSX Studio Re-coded version of vMenu by Normal - Discord: @6w1.'
-version '1.2.03'
+version '1.2.04'
 repository 'https://github.com/normal88/vMenu-lua'
 
 shared_scripts { 'shared/PermissionsManager.lua' }

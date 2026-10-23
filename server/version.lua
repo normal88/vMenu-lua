@@ -71,7 +71,10 @@ function VersionCheck.Run()
     if not repository then return end
 
     local latest, url = FetchLatest(repository)
-    if not latest then return end
+    if not latest then
+        print(("^1Could not check for updates for %s^0"):format(RESOURCE))
+        return
+    end
 
     VersionCheck.Latest = latest
     VersionCheck.Url = url
@@ -80,10 +83,13 @@ function VersionCheck.Run()
     if VersionCheck.Compare(latest, VersionCheck.Current) > 0 then
         print(("^3An update is available for %s (current version: %s, latest version: %s)\r\n%s^0"):format(
             RESOURCE, VersionCheck.Current, latest, url or ("https://github.com/%s/releases/latest"):format(repository)))
+    else
+        print(("^2%s is up to date (version %s)^0"):format(RESOURCE, VersionCheck.Current))
     end
 end
 
 CreateThread(function()
+    print(("^2%s version %s^0"):format(RESOURCE, VersionCheck.Current))
     while true do
         VersionCheck.Run()
         Wait(CHECK_INTERVAL)

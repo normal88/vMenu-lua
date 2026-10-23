@@ -23,15 +23,43 @@ local WebhookColors = {
 }
 
 local vRP = nil
+local vRPLegacy = false
+local vRPLegacyTried = false
+
+-- vRP Dunko has no getvRP export: load its lib/utils.lua + lib/Proxy at runtime
+-- so the manifest does not need '@vrp/lib/utils.lua'.
+local function LoadLegacyvRP()
+    if vRPLegacyTried then return nil end
+    vRPLegacyTried = true
+    if type(module) ~= "function" then
+        local code = LoadResourceFile("vrp", "lib/utils.lua")
+        if not code then return nil end
+        local chunk = load(code, "@vrp/lib/utils.lua")
+        if not chunk or not pcall(chunk) then return nil end
+    end
+    local ok, Proxy = pcall(module, "vrp", "lib/Proxy")
+    if not ok or type(Proxy) ~= "table" or not Proxy.getInterface then return nil end
+    return Proxy.getInterface("vRP")
+end
 
 local function GetUserId(playerId)
     if not playerId then return nil end
     if not vRP and GetResourceState("vrp") == "started" then
         local ok, api = pcall(function() return exports["vrp"]:getvRP() end)
-        if ok then vRP = api end
+        if ok and api then
+            vRP = api
+        else
+            vRP = LoadLegacyvRP()
+            vRPLegacy = vRP ~= nil
+        end
     end
     if not vRP then return nil end
-    local ok, userId = pcall(vRP.getUserId, playerId)
+    local ok, userId
+    if vRPLegacy then
+        ok, userId = pcall(vRP.getUserId, { playerId })
+    else
+        ok, userId = pcall(vRP.getUserId, playerId)
+    end
     return ok and userId or nil
 end
 
@@ -466,6 +494,10 @@ RegisterCommand(
             local cmd = args[1]:lower()
 
             if cmd == "version" then
+                print(("^2vMenu version: %s^0"):format(vMenuVersion))
+                if VersionCheck.Latest then
+                    print(("^2Latest version: %s^0"):format(VersionCheck.Latest))
+                end
             elseif cmd == "debug" then
                 debugMode = not debugMode
             elseif cmd == "reload" then
