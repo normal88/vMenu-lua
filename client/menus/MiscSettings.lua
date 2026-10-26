@@ -29,6 +29,7 @@ MiscSettingsMenu.RestorePlayerWeapons = false
 MiscSettingsMenu.LockCameraX = false
 MiscSettingsMenu.LockCameraY = false
 MiscSettingsMenu.MPPedPreviews = true
+MiscSettingsMenu.VehiclePreviews = false
 
 MiscSettingsMenu.ShowVehicleDimensions = false
 MiscSettingsMenu.ShowPedDimensions = false
@@ -861,6 +862,9 @@ function MiscSettingsMenu.CreateMenu()
     local mpPedPreviewCheckbox = MenuCheckboxItem:New("3D Ped Preview",
         "Shows your saved peds and saved MP characters beside the menu while browsing them. Hold Q / E to rotate the preview.",
         MiscSettingsMenu.MPPedPreviews)
+    local vehiclePreviewCheckbox = MenuCheckboxItem:New("3D Vehicle Preview",
+        "Shows your saved vehicles and spawner vehicles beside the menu while browsing them. Hold Q / E to rotate the preview.",
+        MiscSettingsMenu.VehiclePreviews)
     local saveSettingsBtn = MenuItem:New("Save Personal Settings",
         "Save your current settings. All saving is done on the client side.")
     saveSettingsBtn.RightIcon = Icon.TICK
@@ -935,6 +939,7 @@ function MiscSettingsMenu.CreateMenu()
     menu:AddMenuItem(lockCamXCheckbox)
     menu:AddMenuItem(lockCamYCheckbox)
     menu:AddMenuItem(mpPedPreviewCheckbox)
+    menu:AddMenuItem(vehiclePreviewCheckbox)
     menu:AddMenuItem(saveSettingsBtn)
 
     MenuController:BindMenuItem(menu, keybindSettingsMenu, keybindSettingsBtn)
@@ -1141,6 +1146,9 @@ function MiscSettingsMenu.CreateMenu()
         elseif item == mpPedPreviewCheckbox then
             MiscSettingsMenu.MPPedPreviews = checked
             Notify.Custom("3D Ped Preview " .. (checked and "~g~enabled~s~" or "~r~disabled~s~") .. ".")
+        elseif item == vehiclePreviewCheckbox then
+            MiscSettingsMenu.VehiclePreviews = checked
+            Notify.Custom("3D Vehicle Preview " .. (checked and "~g~enabled~s~" or "~r~disabled~s~") .. ".")
         end
     end
 
@@ -1497,6 +1505,7 @@ function MiscSettingsMenu.SaveSettings()
         RestorePlayerAppearance = MiscSettingsMenu.RestorePlayerAppearance,
         RestorePlayerWeapons = MiscSettingsMenu.RestorePlayerWeapons,
         MPPedPreviews = MiscSettingsMenu.MPPedPreviews,
+        VehiclePreviews = MiscSettingsMenu.VehiclePreviews,
         KbTpToWaypoint = MiscSettingsMenu.KbTpToWaypoint,
         KbDriftMode = MiscSettingsMenu.KbDriftMode,
         KbRecordKeys = MiscSettingsMenu.KbRecordKeys,

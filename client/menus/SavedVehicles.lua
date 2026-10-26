@@ -75,6 +75,18 @@ function SavedVehiclesMenu.CreateMenu()
     SavedVehiclesMenu.SetupSelectedVehicleMenu()
     SavedVehiclesMenu.SetupUnavailableVehiclesMenu()
 
+    local function hoveredVehicle(sender)
+        local item = sender:GetMenuItems()[sender.CurrentIndex]
+        return SavedVehiclesMenu.GetPreview(item and item.ItemData)
+    end
+    for i = 0, 22 do
+        PedPreview.Register(classSubMenus[i], hoveredVehicle)
+    end
+    PedPreview.Register(selectedCategoryMenu, hoveredVehicle)
+    PedPreview.Register(selectedVehicleMenu, function()
+        return SavedVehiclesMenu.GetPreview(currentSelectedVehicle)
+    end)
+
     menu.OnMenuOpen = function(sender)
         if not menuInitialized then
             SavedVehiclesMenu.InitMainMenu()
@@ -1050,6 +1062,11 @@ function SavedVehiclesMenu.ApplyVehicleData(vehicle, vehicleData)
             LowerConvertibleRoof(vehicle, true)
         end
     end
+end
+
+function SavedVehiclesMenu.GetPreview(vehicleData)
+    if type(vehicleData) ~= "table" or not vehicleData.model then return nil end
+    return vehicleData, vehicleData.model, SavedVehiclesMenu.ApplyVehicleData, nil, "vehicle"
 end
 
 function SavedVehiclesMenu.SaveCurrentVehicle()

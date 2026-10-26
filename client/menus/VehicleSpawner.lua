@@ -90,6 +90,13 @@ function VehicleSpawnerMenu.CreateMenu()
                 categoryMenu:AddMenuItem(vehicleBtn)
             end
 
+            PedPreview.Register(categoryMenu, function(sender)
+                local item = sender:GetMenuItems()[sender.CurrentIndex]
+                local vehicleName = item and item.ItemData
+                if type(vehicleName) ~= "string" then return nil end
+                return vehicleName, vehicleName, nil, nil, "vehicle"
+            end)
+
             categoryMenu.OnItemSelect = function(sender, item, index)
                 local vehicleName = item.ItemData
                 if vehicleName then

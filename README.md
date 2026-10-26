@@ -61,6 +61,7 @@ vMenu-lua keeps the vMenu you know (same menus, same options, same ACE permissio
 | **Languages** | English, Arabic, Spanish, Brazilian Portuguese and German. Each player picks their own from the **Language** option in the main menu; it's saved per player and changes live. |
 | **Real Arabic text** | Arabic letters are joined and shown right-to-left correctly, mixed with English names and numbers. Uses a GFx font with Arabic glyphs. |
 | **3D ped preview** | While browsing *Saved Peds* or *Saved MP Characters*, a preview of the ped stands beside the menu with its clothes, tattoos and face. Hold **Q / E** to rotate it. |
+| **3D vehicle preview** | While browsing *Saved Vehicles* or the *Vehicle Spawner*, a small preview of the vehicle appears beside the menu with its paint, mods, wheels, neon and plate, without spawning it. Hold **Q / E** to rotate it. Off by default; turn it on with *3D Vehicle Preview* in *Misc Settings*. |
 | **Custom banner** | Use your own PNG, JPG, animated GIF or image URL as the menu header. |
 | **Draggable menu** | Hold **Left Alt** and drag the banner to move the menu anywhere; the position is saved. A *Reset Menu Position* button is in *Misc Settings*. |
 | **Dark theme** | A dark menu style with an accent line, selectable per player. |
